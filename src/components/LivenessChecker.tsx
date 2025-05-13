@@ -1,5 +1,4 @@
-/* eslint-disable */
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Human from '@vladmandic/human';
 
 const human = new Human({
@@ -91,18 +90,18 @@ export default function LivenessChecker() {
 							setStatus('✅ Wajah terdeteksi, lakukan aksi...');
 						}
 
-            const yaw = face.rotation?.angle?.yaw || 0;
+            // const yaw = face.rotation?.angle?.yaw || 0;
 						const annotations = face.annotations;
 
 						// console.log('yaw', yaw);
 						if (annotations) {
 							const upperLip = annotations.lipsUpperOuter;
 							const lowerLip = annotations.lipsLowerOuter;
-							const nose = annotations.noseTip;
+							// const nose = annotations.noseTip;
 							const leftEye = annotations.leftEyeUpper0;
 							const rightEye = annotations.rightEyeUpper0;
-							const leftCheek = annotations.leftCheek;
-							const rightCheek = annotations.rightCheek;
+							// const leftCheek = annotations.leftCheek;
+							// const rightCheek = annotations.rightCheek;
 						
 							// Contoh deteksi buka mulut
 							if (upperLip && lowerLip) {

@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Human from '@vladmandic/human';
 
 import imgNoMask from "../assets/1-no-mask.png";
@@ -12,6 +12,16 @@ import imgSelfie2 from "../assets/3-selfie.png";
 import imgFace from "../assets/4-face-id.png";
 import imgNoFace from "../assets/4-no-face.png";
 import imgLoading from "../assets/loading.png";
+interface LivenessType {
+  Center: string;
+  LookLeft: string;
+  LookRight: string;
+  OpenMouth: string;
+  Blink: string;
+  LookingCenter: string;
+  Done: string;
+  NoFace: string;
+}
 
 const props = {
 	frame: 'circle',
@@ -36,16 +46,16 @@ const human = new Human({
   filter: { enabled: true },
 });
 
-enum LivenessStep {
-  Center = '✅ Hadapkan wajah ke tengah',
-  LookLeft = '👉 Silakan tengok ke kiri',
-  LookRight = '👈 Silakan tengok ke kanan',
-  OpenMouth = '👄 Buka mulut Anda',
-  Blink = '👁️ Kedipkan mata',
-  LookingCenter = '👁️ Wajah Hadap Kedepan',
-  Done = '🎉 Verifikasi liveness selesai',
-  NoFace = '🚫 Wajah tidak terdeteksi',
-}
+const LivenessStep: LivenessType = {
+  Center: '✅ Hadapkan wajah ke tengah',
+  LookLeft: '👉 Silakan tengok ke kiri',
+  LookRight: '👈 Silakan tengok ke kanan',
+  OpenMouth: '👄 Buka mulut Anda',
+  Blink: '👁️ Kedipkan mata',
+	LookingCenter: '👁️ Wajah Hadap Kedepan',
+  Done: '🎉 Verifikasi liveness selesai',
+  NoFace: '🚫 Wajah tidak terdeteksi',
+} as const;
 
 const instructions = [
 	'',
@@ -67,8 +77,8 @@ const STAGES = [
 export default function LivenessChecker() {
   const videoRef = useRef<HTMLVideoElement>(null);
 	const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [status, setStatus] = useState<LivenessStep>(LivenessStep.NoFace);
-  const [completedSteps, setCompletedSteps] = useState<Set<LivenessStep>>(new Set());
+  const [status, setStatus] = useState<string | any>(LivenessStep.NoFace);
+  const [completedSteps, setCompletedSteps] = useState<Set<LivenessType>>(new Set());
   const [age, setAge] = useState<number>(0);
   const [gender, setGender] = useState<string>('-');
   const [started, setStarted] = useState(false);
@@ -78,9 +88,9 @@ export default function LivenessChecker() {
   const [tempImageCaptured, setTempImageCaptured] = useState<string | null>(null);
   const [response, setResponse] = useState<any>();
   const [stageStep, setStageStep] = useState<number>(0);
-	const prevStageStep = useRef<number>(stageStep);
+	// const prevStageStep = useRef<number>(stageStep);
 
-  const updateStep = (step: LivenessStep) => {
+  const updateStep = (step: LivenessType | string | any) => {
 		if (!completedSteps.has(step)) {
 			console.log('completedSteps', completedSteps.size);
 			setStageStep(completedSteps.size);

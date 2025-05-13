@@ -1,4 +1,4 @@
-import LivenessChecker from './components/LivenessChecker';
+// import LivenessChecker from './components/LivenessChecker';
 import LivenessStep from './components/LivenessStep';
 
 function App() {

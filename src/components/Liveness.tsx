@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Human from '@vladmandic/human';
 
 import imgNoMask from "../assets/1-no-mask.png";
@@ -36,15 +36,27 @@ const human = new Human({
   filter: { enabled: true },
 });
 
-enum LivenessStep {
-  Center = '✅ Hadapkan wajah ke tengah',
-  LookLeft = '👉 Silakan tengok ke kiri',
-  LookRight = '👈 Silakan tengok ke kanan',
-  OpenMouth = '👄 Buka mulut Anda',
-  Blink = '👁️ Kedipkan mata',
-  Done = '🎉 Verifikasi liveness selesai',
-  NoFace = '🚫 Wajah tidak terdeteksi',
+interface LivenessType {
+  Center: string;
+  LookLeft: string;
+  LookRight: string;
+  OpenMouth: string;
+  Blink: string;
+  LookingCenter: string;
+  Done: string;
+  NoFace: string;
 }
+
+const LivenessStep: LivenessType = {
+  Center: '✅ Hadapkan wajah ke tengah',
+  LookLeft: '👉 Silakan tengok ke kiri',
+  LookRight: '👈 Silakan tengok ke kanan',
+  OpenMouth: '👄 Buka mulut Anda',
+  Blink: '👁️ Kedipkan mata',
+	LookingCenter: '👁️ Wajah Hadap Kedepan',
+  Done: '🎉 Verifikasi liveness selesai',
+  NoFace: '🚫 Wajah tidak terdeteksi',
+} as const;
 
 const instructions = [
 	'MULAI',
@@ -57,8 +69,8 @@ const instructions = [
 export default function LivenessChecker() {
   const videoRef = useRef<HTMLVideoElement>(null);
 	const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [status, setStatus] = useState<LivenessStep>(LivenessStep.NoFace);
-  const [completedSteps, setCompletedSteps] = useState<Set<LivenessStep>>(new Set());
+  const [status, setStatus] = useState<string>(LivenessStep.NoFace);
+  const [completedSteps, setCompletedSteps] = useState<Set<LivenessType>>(new Set());
   const [age, setAge] = useState<number>(0);
   const [gender, setGender] = useState<string>('-');
   const [started, setStarted] = useState(false);
@@ -66,7 +78,7 @@ export default function LivenessChecker() {
   const [imageCaptured, setImageCaptured] = useState<string | null>(null);
   const [response, setResponse] = useState<any>();
 
-  const updateStep = (step: LivenessStep) => {
+  const updateStep = (step: LivenessType | string | any) => {
     if (!completedSteps.has(step)) {
       setCompletedSteps(new Set(completedSteps.add(step)));
     }
