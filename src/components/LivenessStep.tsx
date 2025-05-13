@@ -218,6 +218,7 @@ export default function LivenessChecker() {
 		setImageCaptured(null);
 		setTempImageCaptured(null);
 		setCompletedSteps(new Set());
+		setStatus(LivenessStep.NoFace);
 	}
 
 	const renderInstruction = (step: number) => {
